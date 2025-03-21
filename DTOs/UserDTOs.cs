@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 
 namespace PortfolioOpgave.DTOs
 {
@@ -34,19 +35,7 @@ namespace PortfolioOpgave.DTOs
         public string Email { get; set; }
         public ICollection<ProjectDto> Projects { get; set; }
         public ICollection<SkillDto> Skills { get; set; }
-    }
-
-    public class ProjectDto
-    {
-        public int Id { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-    }
-
-    public class SkillDto
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public int Level { get; set; }
+        public ICollection<WorkExperienceDto> WorkExperience { get; set; }
+        public ICollection<EducationDto> Education { get; set; }
     }
 }

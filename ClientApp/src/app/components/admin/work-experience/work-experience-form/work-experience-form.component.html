@@ -1,0 +1,138 @@
+<div class="form-container">
+    <mat-card class="form-card">
+        <mat-card-header>
+            <mat-card-title
+                >{{ isEditMode ? 'Edit' : 'Add' }} Work
+                Experience</mat-card-title
+            >
+        </mat-card-header>
+
+        <mat-card-content>
+            <div *ngIf="loading" class="loading-container">
+                <mat-spinner diameter="40"></mat-spinner>
+                <p>
+                    {{
+                        isEditMode
+                            ? 'Loading work experience details...'
+                            : 'Processing...'
+                    }}
+                </p>
+            </div>
+
+            <div *ngIf="error" class="error-message">
+                {{ error }}
+            </div>
+
+            <form
+                [formGroup]="workExperienceForm"
+                (ngSubmit)="onSubmit()"
+                *ngIf="!loading || isEditMode"
+            >
+                <div class="form-field">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Company Name</mat-label>
+                        <input
+                            matInput
+                            formControlName="company"
+                            placeholder="Enter company name"
+                        />
+                        <mat-error
+                            *ngIf="
+                                workExperienceForm.controls['company'].hasError(
+                                    'required'
+                                )
+                            "
+                        >
+                            Company name is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="form-field">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Position</mat-label>
+                        <input
+                            matInput
+                            formControlName="position"
+                            placeholder="Enter position or job title"
+                        />
+                        <mat-error
+                            *ngIf="
+                                workExperienceForm.controls[
+                                    'position'
+                                ].hasError('required')
+                            "
+                        >
+                            Position is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-field half-width">
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Start Date</mat-label>
+                            <input
+                                matInput
+                                [matDatepicker]="startPicker"
+                                formControlName="startDate"
+                                placeholder="MM/DD/YYYY"
+                            />
+                            <mat-datepicker-toggle
+                                matSuffix
+                                [for]="startPicker"
+                            ></mat-datepicker-toggle>
+                            <mat-datepicker #startPicker></mat-datepicker>
+                            <mat-error
+                                *ngIf="
+                                    workExperienceForm.controls[
+                                        'startDate'
+                                    ].hasError('required')
+                                "
+                            >
+                                Start date is required
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="form-field half-width">
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>End Date</mat-label>
+                            <input
+                                matInput
+                                [matDatepicker]="endPicker"
+                                formControlName="endDate"
+                                placeholder="MM/DD/YYYY"
+                            />
+                            <mat-datepicker-toggle
+                                matSuffix
+                                [for]="endPicker"
+                            ></mat-datepicker-toggle>
+                            <mat-datepicker #endPicker></mat-datepicker>
+                            <mat-hint>Leave empty for present</mat-hint>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button
+                        mat-button
+                        type="button"
+                        routerLink="/admin"
+                        [queryParams]="{ tab: 'experience' }"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        mat-raised-button
+                        color="primary"
+                        type="submit"
+                        [disabled]="!workExperienceForm.valid || loading"
+                    >
+                        {{ isEditMode ? 'Update' : 'Save' }}
+                    </button>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

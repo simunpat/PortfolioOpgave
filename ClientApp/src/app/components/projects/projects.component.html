@@ -1,0 +1,42 @@
+<div class="container">
+    <h1>My Projects</h1>
+
+    <div *ngIf="loading" class="loading-spinner">
+        <mat-spinner></mat-spinner>
+    </div>
+
+    <div
+        *ngIf="!loading && !error && projects.length > 0"
+        class="projects-grid"
+    >
+        <mat-card *ngFor="let project of projects" class="project-card">
+            <mat-card-header>
+                <mat-card-title>{{ project.title }}</mat-card-title>
+            </mat-card-header>
+            <mat-card-actions>
+                <button mat-button [routerLink]="['/projects', project.id]">
+                    VIEW DETAILS
+                </button>
+                <a
+                    *ngIf="project.liveDemoUrl"
+                    mat-button
+                    [href]="project.liveDemoUrl"
+                    target="_blank"
+                >
+                    VISIT PROJECT
+                </a>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+
+    <div
+        *ngIf="!loading && !error && projects.length === 0"
+        class="empty-state"
+    >
+        <p>No projects found. Projects will be added soon.</p>
+    </div>
+
+    <div *ngIf="error" class="error-message">
+        <p>There was an error loading the projects. Please try again later.</p>
+    </div>
+</div>

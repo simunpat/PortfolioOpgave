@@ -19,5 +19,7 @@ namespace PortfolioOpgave.Models
         // Navigation properties
         public ICollection<Project> Projects { get; set; } = new List<Project>();
         public ICollection<Skill> Skills { get; set; } = new List<Skill>();
+        public ICollection<WorkExperience> WorkExperience { get; set; } = new List<WorkExperience>();
+        public ICollection<Education> Education { get; set; } = new List<Education>();
     }
 }

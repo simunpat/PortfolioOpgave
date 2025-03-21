@@ -1,0 +1,71 @@
+<div class="education-container">
+    <h2 class="section-title">Education</h2>
+
+    <!-- Admin controls -->
+    <div *ngIf="isAdminView" class="admin-controls">
+        <button
+            mat-raised-button
+            color="primary"
+            routerLink="/admin/education/new"
+        >
+            <mat-icon>add</mat-icon>
+            Add New Education
+        </button>
+    </div>
+
+    <div *ngIf="loading" class="loading-container">
+        <mat-spinner diameter="40"></mat-spinner>
+        <p>Loading education history...</p>
+    </div>
+
+    <div *ngIf="error" class="error-container">
+        <p>Error loading education history. Please try again later.</p>
+    </div>
+
+    <div *ngIf="!loading && !error" class="education-timeline">
+        <mat-card
+            *ngFor="let education of educationList; let last = last"
+            class="education-card"
+        >
+            <mat-card-header>
+                <div mat-card-avatar class="education-icon">
+                    <mat-icon>school</mat-icon>
+                </div>
+                <mat-card-title>{{ education.degree }}</mat-card-title>
+                <mat-card-subtitle>{{
+                    education.institution
+                }}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="education-period">
+                    {{ formatDate(education.startDate) }} -
+                    {{ formatDate(education.endDate) }}
+                </div>
+            </mat-card-content>
+
+            <!-- Admin actions -->
+            <mat-card-actions *ngIf="isAdminView" class="card-actions-end">
+                <button
+                    mat-button
+                    color="primary"
+                    [routerLink]="['/admin/education', education.id, 'edit']"
+                >
+                    <mat-icon>edit</mat-icon> Edit
+                </button>
+                <button
+                    mat-button
+                    color="warn"
+                    (click)="deleteEducation(education.id)"
+                >
+                    <mat-icon>delete</mat-icon> Delete
+                </button>
+            </mat-card-actions>
+
+            <mat-divider *ngIf="!last"></mat-divider>
+        </mat-card>
+
+        <div *ngIf="educationList.length === 0" class="no-data">
+            <p>No education history available.</p>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,47 @@
+<div class="project-detail-container">
+    <div *ngIf="loading" class="loading-spinner">
+        <mat-spinner></mat-spinner>
+    </div>
+
+    <div *ngIf="!loading && project">
+        <button mat-button routerLink="/projects" class="back-button">
+            <mat-icon>arrow_back</mat-icon> Back to Projects
+        </button>
+
+        <mat-card class="project-card">
+            <mat-card-header>
+                <mat-card-title>{{ project.title }}</mat-card-title>
+            </mat-card-header>
+            <mat-card-actions>
+                <a
+                    *ngIf="project.liveDemoUrl"
+                    mat-raised-button
+                    color="primary"
+                    [href]="project.liveDemoUrl"
+                    target="_blank"
+                >
+                    <mat-icon>launch</mat-icon> Visit Project
+                </a>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+
+    <div *ngIf="notFound" class="not-found">
+        <h2>Project Not Found</h2>
+        <p>The project you're looking for doesn't exist.</p>
+        <button mat-raised-button color="primary" routerLink="/projects">
+            View All Projects
+        </button>
+    </div>
+
+    <div *ngIf="error" class="error-message">
+        <h2>Error Loading Project</h2>
+        <p>
+            There was an error loading the project details. Please try again
+            later.
+        </p>
+        <button mat-raised-button color="primary" routerLink="/projects">
+            View All Projects
+        </button>
+    </div>
+</div>

@@ -1,5 +1,6 @@
 using PortfolioOpgave.Models;
 using PortfolioOpgave.DTOs;
+using System.Collections.Generic;
 
 namespace PortfolioOpgave.Interfaces
 {
@@ -7,7 +8,8 @@ namespace PortfolioOpgave.Interfaces
     {
         IEnumerable<WorkExperienceDto> GetAllWithDetails();
         WorkExperienceDto GetByIdWithDetails(int id);
-        WorkExperienceDto Create(WorkExperienceCreateDto createWorkExperienceDto);
-        void Update(int id, WorkExperienceCreateDto updateWorkExperienceDto);
+        WorkExperienceDto Create(CreateWorkExperienceDto createWorkExperienceDto);
+        void Update(int id, CreateWorkExperienceDto updateWorkExperienceDto);
+        IEnumerable<WorkExperienceDto> GetUserWorkExperiences(int userId);
     }
 }

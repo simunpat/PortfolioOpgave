@@ -1,5 +1,6 @@
 using PortfolioOpgave.Models;
 using PortfolioOpgave.DTOs;
+using System.Collections.Generic;
 
 namespace PortfolioOpgave.Interfaces
 {
@@ -7,7 +8,8 @@ namespace PortfolioOpgave.Interfaces
     {
         IEnumerable<EducationDto> GetAllWithDetails();
         EducationDto GetByIdWithDetails(int id);
-        EducationDto Create(EducationCreateDto createEducationDto);
-        void Update(int id, EducationCreateDto updateEducationDto);
+        EducationDto Create(CreateEducationDto createEducationDto);
+        void Update(int id, CreateEducationDto updateEducationDto);
+        IEnumerable<EducationDto> GetUserEducations(int userId);
     }
 }

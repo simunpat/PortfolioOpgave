@@ -1,0 +1,136 @@
+<div class="form-container">
+    <mat-card class="form-card">
+        <mat-card-header>
+            <mat-card-title
+                >{{ isEditMode ? 'Edit' : 'Add' }} Education</mat-card-title
+            >
+        </mat-card-header>
+
+        <mat-card-content>
+            <div *ngIf="loading" class="loading-container">
+                <mat-spinner diameter="40"></mat-spinner>
+                <p>
+                    {{
+                        isEditMode
+                            ? 'Loading education details...'
+                            : 'Processing...'
+                    }}
+                </p>
+            </div>
+
+            <div *ngIf="error" class="error-message">
+                {{ error }}
+            </div>
+
+            <form
+                [formGroup]="educationForm"
+                (ngSubmit)="onSubmit()"
+                *ngIf="!loading || isEditMode"
+            >
+                <div class="form-field">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Institution</mat-label>
+                        <input
+                            matInput
+                            formControlName="institution"
+                            placeholder="Enter institution name"
+                        />
+                        <mat-error
+                            *ngIf="
+                                educationForm.controls['institution'].hasError(
+                                    'required'
+                                )
+                            "
+                        >
+                            Institution is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="form-field">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Degree</mat-label>
+                        <input
+                            matInput
+                            formControlName="degree"
+                            placeholder="Enter degree name"
+                        />
+                        <mat-error
+                            *ngIf="
+                                educationForm.controls['degree'].hasError(
+                                    'required'
+                                )
+                            "
+                        >
+                            Degree is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-field half-width">
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Start Date</mat-label>
+                            <input
+                                matInput
+                                [matDatepicker]="startPicker"
+                                formControlName="startDate"
+                                placeholder="MM/DD/YYYY"
+                            />
+                            <mat-datepicker-toggle
+                                matSuffix
+                                [for]="startPicker"
+                            ></mat-datepicker-toggle>
+                            <mat-datepicker #startPicker></mat-datepicker>
+                            <mat-error
+                                *ngIf="
+                                    educationForm.controls[
+                                        'startDate'
+                                    ].hasError('required')
+                                "
+                            >
+                                Start date is required
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="form-field half-width">
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>End Date</mat-label>
+                            <input
+                                matInput
+                                [matDatepicker]="endDatePicker"
+                                formControlName="endDate"
+                                placeholder="MM/DD/YYYY"
+                            />
+                            <mat-datepicker-toggle
+                                matSuffix
+                                [for]="endDatePicker"
+                            ></mat-datepicker-toggle>
+                            <mat-datepicker #endDatePicker></mat-datepicker>
+                            <mat-hint>Leave empty for present</mat-hint>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button
+                        mat-button
+                        type="button"
+                        routerLink="/admin/education"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        mat-raised-button
+                        color="primary"
+                        type="submit"
+                        [disabled]="educationForm.invalid || loading"
+                    >
+                        {{ isEditMode ? 'Update' : 'Save' }}
+                    </button>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

@@ -1,0 +1,84 @@
+<div class="project-form-container">
+    <div class="form-header">
+        <h1>{{ pageTitle }}</h1>
+        <button mat-icon-button (click)="onCancel()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+
+    <form
+        [formGroup]="projectForm"
+        (ngSubmit)="onSubmit()"
+        class="project-form"
+    >
+        <mat-form-field appearance="outline">
+            <mat-label>Project Title</mat-label>
+            <input
+                matInput
+                formControlName="title"
+                placeholder="Enter project title"
+            />
+            <mat-error *ngIf="projectForm.get('title')?.hasError('required')">
+                Title is required
+            </mat-error>
+            <mat-error *ngIf="projectForm.get('title')?.hasError('minlength')">
+                Title must be at least 3 characters long
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Live Demo URL (optional)</mat-label>
+            <input
+                matInput
+                formControlName="liveDemoUrl"
+                placeholder="https://example.com"
+            />
+            <mat-error
+                *ngIf="projectForm.get('liveDemoUrl')?.hasError('pattern')"
+            >
+                Please enter a valid URL starting with http:// or https://
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Project Category</mat-label>
+            <mat-select formControlName="projectCategoryId">
+                <mat-option
+                    *ngFor="let category of projectCategories"
+                    [value]="category.id"
+                >
+                    {{ category.name }}
+                </mat-option>
+            </mat-select>
+            <mat-error
+                *ngIf="
+                    projectForm.get('projectCategoryId')?.hasError('required')
+                "
+            >
+                Project category is required
+            </mat-error>
+        </mat-form-field>
+
+        <div class="error-message" *ngIf="error">
+            {{ error }}
+        </div>
+
+        <div class="form-actions">
+            <button mat-button type="button" (click)="onCancel()">
+                Cancel
+            </button>
+            <button
+                mat-raised-button
+                color="primary"
+                type="submit"
+                [disabled]="!projectForm.valid || isLoading"
+            >
+                <mat-icon *ngIf="!isLoading">{{
+                    isEditMode ? 'update' : 'save'
+                }}</mat-icon>
+                <mat-spinner diameter="20" *ngIf="isLoading"></mat-spinner>
+                {{ isEditMode ? 'Update' : 'Create' }} Project
+            </button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,85 @@
+.education-container {
+  padding: 2rem 0;
+}
+
+.section-title {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #333;
+  text-align: center;
+}
+
+.admin-controls {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1.5rem;
+  padding: 0 1rem;
+}
+
+.loading-container, .error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.education-timeline {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.education-card {
+  margin-bottom: 1.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.education-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.education-icon {
+  background-color: #3f51b5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.education-period {
+  margin: 0.5rem 0;
+  color: #666;
+  font-style: italic;
+}
+
+.education-field {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.card-actions-end {
+  display: flex;
+  justify-content: flex-end;
+}
+
+mat-divider {
+  margin: 1.5rem 0;
+}
+
+.no-data {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .education-timeline {
+    padding: 0 1rem;
+  }
+  
+  .section-title {
+    font-size: 1.75rem;
+  }
+} 

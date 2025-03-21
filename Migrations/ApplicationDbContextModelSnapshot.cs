@@ -2,7 +2,6 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PortfolioOpgave.Data;
 
@@ -17,18 +16,14 @@ namespace PortfolioOpgave.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.2")
+                .HasAnnotation("ProductVersion", "8.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
-
-            MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
             modelBuilder.Entity("PortfolioOpgave.Models.Education", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Degree")
                         .IsRequired()
@@ -59,8 +54,6 @@ namespace PortfolioOpgave.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
@@ -93,8 +86,6 @@ namespace PortfolioOpgave.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -109,8 +100,6 @@ namespace PortfolioOpgave.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -135,8 +124,6 @@ namespace PortfolioOpgave.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -159,8 +146,6 @@ namespace PortfolioOpgave.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Company")
                         .IsRequired()
@@ -189,7 +174,7 @@ namespace PortfolioOpgave.Migrations
             modelBuilder.Entity("PortfolioOpgave.Models.Education", b =>
                 {
                     b.HasOne("PortfolioOpgave.Models.User", "User")
-                        .WithMany()
+                        .WithMany("Education")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -230,7 +215,7 @@ namespace PortfolioOpgave.Migrations
             modelBuilder.Entity("PortfolioOpgave.Models.WorkExperience", b =>
                 {
                     b.HasOne("PortfolioOpgave.Models.User", "User")
-                        .WithMany()
+                        .WithMany("WorkExperience")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -240,9 +225,13 @@ namespace PortfolioOpgave.Migrations
 
             modelBuilder.Entity("PortfolioOpgave.Models.User", b =>
                 {
+                    b.Navigation("Education");
+
                     b.Navigation("Projects");
 
                     b.Navigation("Skills");
+
+                    b.Navigation("WorkExperience");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,6 +1,10 @@
 using PortfolioOpgave.Interfaces;
 using PortfolioOpgave.Models;
 using PortfolioOpgave.DTOs;
+using AutoMapper;
+using PortfolioOpgave.Data;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PortfolioOpgave.Services
 {
@@ -8,27 +12,22 @@ namespace PortfolioOpgave.Services
     {
         private readonly IRepository<Education> _educationRepository;
         private readonly IRepository<User> _userRepository;
+        private readonly IMapper _mapper;
 
         public EducationService(
             IRepository<Education> educationRepository,
-            IRepository<User> userRepository) : base(educationRepository)
+            IRepository<User> userRepository,
+            IMapper mapper) : base(educationRepository)
         {
             _educationRepository = educationRepository;
             _userRepository = userRepository;
+            _mapper = mapper;
         }
 
         public IEnumerable<EducationDto> GetAllWithDetails()
         {
             var educations = _educationRepository.GetAll();
-            return educations.Select(e => new EducationDto
-            {
-                Id = e.Id,
-                Institution = e.Institution,
-                Degree = e.Degree,
-                StartDate = e.StartDate,
-                EndDate = e.EndDate,
-                UserId = e.UserId
-            }).ToList();
+            return _mapper.Map<IEnumerable<EducationDto>>(educations);
         }
 
         public EducationDto GetByIdWithDetails(int id)
@@ -37,46 +36,22 @@ namespace PortfolioOpgave.Services
             if (education == null)
                 return null;
 
-            return new EducationDto
-            {
-                Id = education.Id,
-                Institution = education.Institution,
-                Degree = education.Degree,
-                StartDate = education.StartDate,
-                EndDate = education.EndDate,
-                UserId = education.UserId
-            };
+            return _mapper.Map<EducationDto>(education);
         }
 
-        public EducationDto Create(EducationCreateDto createEducationDto)
+        public EducationDto Create(CreateEducationDto createEducationDto)
         {
             var user = _userRepository.GetById(createEducationDto.UserId);
             if (user == null)
                 throw new KeyNotFoundException($"User with ID {createEducationDto.UserId} not found");
 
-            var education = new Education
-            {
-                Institution = createEducationDto.Institution,
-                Degree = createEducationDto.Degree,
-                StartDate = createEducationDto.StartDate,
-                EndDate = createEducationDto.EndDate ?? DateTime.MaxValue,
-                UserId = createEducationDto.UserId
-            };
-
+            var education = _mapper.Map<Education>(createEducationDto);
             _educationRepository.Add(education);
 
-            return new EducationDto
-            {
-                Id = education.Id,
-                Institution = education.Institution,
-                Degree = education.Degree,
-                StartDate = education.StartDate,
-                EndDate = education.EndDate,
-                UserId = education.UserId
-            };
+            return _mapper.Map<EducationDto>(education);
         }
 
-        public void Update(int id, EducationCreateDto updateEducationDto)
+        public void Update(int id, CreateEducationDto updateEducationDto)
         {
             var education = _educationRepository.GetById(id);
             if (education == null)
@@ -86,13 +61,14 @@ namespace PortfolioOpgave.Services
             if (user == null)
                 throw new KeyNotFoundException($"User with ID {updateEducationDto.UserId} not found");
 
-            education.Institution = updateEducationDto.Institution;
-            education.Degree = updateEducationDto.Degree;
-            education.StartDate = updateEducationDto.StartDate;
-            education.EndDate = updateEducationDto.EndDate ?? DateTime.MaxValue;
-            education.UserId = updateEducationDto.UserId;
-
+            _mapper.Map(updateEducationDto, education);
             _educationRepository.Update(education);
+        }
+
+        public IEnumerable<EducationDto> GetUserEducations(int userId)
+        {
+            var educations = _educationRepository.Find(e => e.UserId == userId);
+            return _mapper.Map<IEnumerable<EducationDto>>(educations);
         }
     }
 }

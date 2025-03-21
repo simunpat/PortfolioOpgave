@@ -1,0 +1,295 @@
+.admin-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.admin-header h1 {
+  margin: 0;
+  color: #333;
+}
+
+.admin-card {
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.section-header h2 {
+  margin: 0;
+  color: #444;
+  display: flex;
+  align-items: center;
+}
+
+.section-header h2 mat-icon {
+  margin-right: 8px;
+}
+
+.action-buttons {
+  margin-top: 20px;
+}
+
+.action-buttons button {
+  margin-right: 1rem;
+}
+
+/* Projects Table Styling */
+.projects-container {
+  width: 100%;
+}
+
+.projects-table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.projects-table {
+  width: 100%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+}
+
+.projects-table th {
+  font-weight: 500;
+  color: #3f51b5;
+  background-color: #f5f5f5;
+}
+
+.projects-table td, .projects-table th {
+  padding: 12px 16px;
+}
+
+.projects-table td a.mat-button {
+  padding: 0 8px;
+  min-width: 0;
+  line-height: 32px;
+}
+
+.projects-table td a.mat-button mat-icon {
+  font-size: 18px;
+  height: 18px;
+  width: 18px;
+  margin-right: 4px;
+  vertical-align: middle;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+}
+
+.error-message {
+  color: #f44336;
+  padding: 16px;
+  border-radius: 4px;
+  background-color: #ffebee;
+  margin: 16px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.no-data-message {
+  text-align: center;
+  padding: 30px;
+  color: #757575;
+}
+
+.no-data-message p {
+  margin-bottom: 16px;
+}
+
+.add-button {
+  display: flex;
+  align-items: center;
+}
+
+.add-button mat-icon {
+  margin-right: 8px;
+}
+
+/* Custom Tabs Styling */
+.custom-tabs {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.tabs-header {
+  display: flex;
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 20px;
+}
+
+.tab-button {
+  padding: 12px 24px;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  font-size: 16px;
+  font-weight: 500;
+  color: #757575;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tab-button:hover {
+  color: #3f51b5;
+}
+
+.tab-button.active {
+  color: #3f51b5;
+  border-bottom-color: #3f51b5;
+}
+
+.tab-content {
+  padding: 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .tabs-header {
+    flex-wrap: wrap;
+  }
+  
+  .tab-button {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+  
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .section-header button {
+    margin-top: 10px;
+  }
+
+  .projects-table td, .projects-table th {
+    padding: 8px 12px;
+  }
+}
+
+/* Skills Table Styling */
+.skills-container {
+  width: 100%;
+}
+
+.skills-table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.skills-table {
+  width: 100%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+}
+
+.skills-table th {
+  font-weight: 500;
+  color: #3f51b5;
+  background-color: #f5f5f5;
+}
+
+.skills-table td, .skills-table th {
+  padding: 12px 16px;
+}
+
+.proficiency-indicator {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.proficiency-progress-container {
+  width: 100%;
+  height: 8px;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.proficiency-progress {
+  height: 100%;
+  background-color: #3f51b5;
+  border-radius: 4px;
+}
+
+.proficiency-percentage {
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-align: center;
+  color: #3f51b5;
+  margin-top: 4px;
+}
+
+/* Education table styles */
+.education-table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.education-table {
+    width: 100%;
+    margin-top: 16px;
+    border-collapse: collapse;
+}
+
+/* Reusing existing styles for consistency */
+.no-data-message {
+    margin: 24px 0;
+    text-align: center;
+    color: #777;
+}
+
+.loading-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 24px 0;
+}
+
+.education-container {
+    margin-top: 16px;
+}
+
+/* Work Experience table styles */
+.work-experience-table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.work-experience-table {
+    width: 100%;
+    margin-top: 16px;
+    border-collapse: collapse;
+}
+
+.work-experience-container {
+    margin-top: 16px;
+} 

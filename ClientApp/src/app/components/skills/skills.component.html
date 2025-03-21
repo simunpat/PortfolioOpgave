@@ -1,0 +1,29 @@
+<div class="container">
+    <h2 class="section-title">Skills & Expertise</h2>
+
+    <div *ngIf="loading" class="loading-spinner">
+        <mat-spinner diameter="40"></mat-spinner>
+        <p>Loading skills...</p>
+    </div>
+
+    <div *ngIf="error" class="error-message">
+        <p>Error loading skills. Please try again later.</p>
+    </div>
+
+    <div *ngIf="!loading && !error" class="skills-grid">
+        <mat-card *ngFor="let skill of skills" class="skill-card">
+            <mat-card-header>
+                <mat-card-title>{{ skill.name }}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <mat-progress-bar
+                    [value]="getSkillLevelPercentage(skill.proficiencyLevel)"
+                    [color]="'primary'"
+                ></mat-progress-bar>
+                <div class="skill-level-text">
+                    {{ skill.proficiencyLevel }}%
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

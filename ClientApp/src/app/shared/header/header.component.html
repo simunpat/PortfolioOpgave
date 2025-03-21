@@ -1,0 +1,31 @@
+<header class="header">
+    <div class="container">
+        <div class="header-content">
+            <a routerLink="/" class="logo">
+                <h1>Portfolio Hub</h1>
+            </a>
+            <div class="nav-links">
+                <a
+                    *ngIf="isLoggedIn"
+                    routerLink="/admin"
+                    class="admin-link"
+                    mat-button
+                    color="basic"
+                >
+                    <mat-icon>dashboard</mat-icon>
+                    Admin Dashboard
+                </a>
+            </div>
+            <div class="auth-buttons">
+                <button *ngIf="!isLoggedIn" mat-button routerLink="/login">
+                    <mat-icon>login</mat-icon>
+                    Login
+                </button>
+                <button *ngIf="isLoggedIn" mat-button (click)="logout()">
+                    <mat-icon>logout</mat-icon>
+                    Logout
+                </button>
+            </div>
+        </div>
+    </div>
+</header>

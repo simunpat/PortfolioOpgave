@@ -15,11 +15,11 @@ namespace PortfolioOpgave.Controllers
     [ApiController]
     public class ProjectCategoryController : ControllerBase
     {
-        private readonly IProjectCategoryService _projectCategoryService;
+        private readonly IProjectCategoryService _categoryService;
 
-        public ProjectCategoryController(IProjectCategoryService projectCategoryService)
+        public ProjectCategoryController(IProjectCategoryService categoryService)
         {
-            _projectCategoryService = projectCategoryService;
+            _categoryService = categoryService;
         }
 
         // GET: api/ProjectCategory
@@ -27,7 +27,7 @@ namespace PortfolioOpgave.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<ProjectCategoryDto>> GetProjectCategories()
         {
-            var categories = _projectCategoryService.GetAllWithDetails();
+            var categories = _categoryService.GetAllWithDetails();
             return Ok(categories);
         }
 
@@ -36,7 +36,21 @@ namespace PortfolioOpgave.Controllers
         [HttpGet("{id}")]
         public ActionResult<ProjectCategoryDto> GetProjectCategory(int id)
         {
-            var category = _projectCategoryService.GetByIdWithDetails(id);
+            var category = _categoryService.GetByIdWithDetails(id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(category);
+        }
+
+        // GET: api/ProjectCategory/project/5
+        [AllowAnonymous]
+        [HttpGet("project/{projectId}")]
+        public ActionResult<ProjectCategoryDto> GetProjectCategoryByProjectId(int projectId)
+        {
+            var category = _categoryService.GetByProjectId(projectId);
             if (category == null)
             {
                 return NotFound();
@@ -48,11 +62,11 @@ namespace PortfolioOpgave.Controllers
         // POST: api/ProjectCategory
         [Authorize]
         [HttpPost]
-        public ActionResult<ProjectCategoryDto> PostProjectCategory(ProjectCategoryCreateDto categoryDto)
+        public ActionResult<ProjectCategoryDto> PostProjectCategory(CreateProjectCategoryDto categoryDto)
         {
             try
             {
-                var createdCategory = _projectCategoryService.Create(categoryDto);
+                var createdCategory = _categoryService.Create(categoryDto);
                 return CreatedAtAction(nameof(GetProjectCategory), new { id = createdCategory.Id }, createdCategory);
             }
             catch (KeyNotFoundException ex)
@@ -64,11 +78,11 @@ namespace PortfolioOpgave.Controllers
         // PUT: api/ProjectCategory/5
         [Authorize]
         [HttpPut("{id}")]
-        public IActionResult PutProjectCategory(int id, ProjectCategoryCreateDto categoryDto)
+        public IActionResult PutProjectCategory(int id, CreateProjectCategoryDto categoryDto)
         {
             try
             {
-                _projectCategoryService.Update(id, categoryDto);
+                _categoryService.Update(id, categoryDto);
                 return NoContent();
             }
             catch (KeyNotFoundException)
@@ -84,13 +98,13 @@ namespace PortfolioOpgave.Controllers
         {
             try
             {
-                var category = _projectCategoryService.GetById(id);
+                var category = _categoryService.GetByIdWithDetails(id);
                 if (category == null)
                 {
                     return NotFound();
                 }
 
-                _projectCategoryService.Delete(id);
+                _categoryService.Delete(id);
                 return NoContent();
             }
             catch (Exception)

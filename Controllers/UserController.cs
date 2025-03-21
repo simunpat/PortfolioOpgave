@@ -99,5 +99,47 @@ namespace PortfolioOpgave.Controllers
         {
             return Ok("This is a public endpoint");
         }
+
+        // GET: api/User/byEmail/{email}
+        [AllowAnonymous]
+        [HttpGet("byEmail/{email}")]
+        public ActionResult<AuthResponseDto> GetUserByEmail(string email)
+        {
+            try
+            {
+                Console.WriteLine($"Finding user by email: {email}");
+
+                if (string.IsNullOrEmpty(email))
+                {
+                    return BadRequest("Email is required");
+                }
+
+                // Get the user by email
+                var userRepository = HttpContext.RequestServices.GetService<IUserRepository>();
+                var user = userRepository.Find(u => u.Email == email).FirstOrDefault();
+
+                if (user == null)
+                {
+                    Console.WriteLine($"User with email {email} not found");
+                    return NotFound($"User with email {email} not found");
+                }
+
+                // Create the response with the correct user ID
+                var response = new AuthResponseDto
+                {
+                    UserId = user.Id,
+                    Name = user.Name,
+                    Email = user.Email
+                };
+
+                Console.WriteLine($"Found user by email: UserId={response.UserId}, Name={response.Name}, Email={response.Email}");
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error finding user by email: {ex.Message}");
+                return StatusCode(500, ex.Message);
+            }
+        }
     }
 }

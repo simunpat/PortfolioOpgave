@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace PortfolioOpgave.DTOs
@@ -12,7 +13,7 @@ namespace PortfolioOpgave.DTOs
         public int UserId { get; set; }
     }
 
-    public class WorkExperienceCreateDto
+    public class CreateWorkExperienceDto
     {
         [Required]
         public string Company { get; set; }
@@ -25,7 +26,20 @@ namespace PortfolioOpgave.DTOs
 
         public DateTime? EndDate { get; set; }
 
-        [Required]
         public int UserId { get; set; }
+    }
+
+    public class UpdateWorkExperienceDto
+    {
+        [Required]
+        public string Company { get; set; }
+
+        [Required]
+        public string Position { get; set; }
+
+        [Required]
+        public DateTime StartDate { get; set; }
+
+        public DateTime? EndDate { get; set; }
     }
 }

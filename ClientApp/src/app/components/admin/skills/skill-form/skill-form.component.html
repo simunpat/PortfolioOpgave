@@ -1,0 +1,71 @@
+<div class="skill-form-container">
+    <div class="form-header">
+        <h1>{{ pageTitle }}</h1>
+        <button mat-icon-button (click)="onCancel()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+
+    <form [formGroup]="skillForm" (ngSubmit)="onSubmit()" class="skill-form">
+        <mat-form-field appearance="outline">
+            <mat-label>Skill Name</mat-label>
+            <input
+                matInput
+                formControlName="name"
+                placeholder="Enter skill name"
+            />
+            <mat-error *ngIf="skillForm.get('name')?.hasError('required')">
+                Skill name is required
+            </mat-error>
+            <mat-error *ngIf="skillForm.get('name')?.hasError('minlength')">
+                Skill name must be at least 2 characters long
+            </mat-error>
+        </mat-form-field>
+
+        <div class="proficiency-field">
+            <label class="proficiency-label"
+                >Proficiency Level:
+                {{ skillForm.get('proficiencyLevel')?.value }}%</label
+            >
+
+            <div class="slider-container">
+                <input
+                    type="range"
+                    min="1"
+                    max="100"
+                    formControlName="proficiencyLevel"
+                    class="proficiency-slider"
+                />
+                <div class="proficiency-markers">
+                    <span>1%</span>
+                    <span>25%</span>
+                    <span>50%</span>
+                    <span>75%</span>
+                    <span>100%</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="error-message" *ngIf="error">
+            {{ error }}
+        </div>
+
+        <div class="form-actions">
+            <button mat-button type="button" (click)="onCancel()">
+                Cancel
+            </button>
+            <button
+                mat-raised-button
+                color="primary"
+                type="submit"
+                [disabled]="!skillForm.valid || isLoading"
+            >
+                <mat-icon *ngIf="!isLoading">{{
+                    isEditMode ? 'update' : 'save'
+                }}</mat-icon>
+                <mat-spinner diameter="20" *ngIf="isLoading"></mat-spinner>
+                {{ isEditMode ? 'Update' : 'Add' }} Skill
+            </button>
+        </div>
+    </form>
+</div>

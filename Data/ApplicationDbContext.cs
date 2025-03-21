@@ -21,6 +21,25 @@ namespace PortfolioOpgave.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            // Configure primary keys and auto-increment
+            modelBuilder.Entity<User>()
+                .HasKey(u => u.Id);
+
+            modelBuilder.Entity<Skill>()
+                .HasKey(s => s.Id);
+
+            modelBuilder.Entity<Project>()
+                .HasKey(p => p.Id);
+
+            modelBuilder.Entity<Education>()
+                .HasKey(e => e.Id);
+
+            modelBuilder.Entity<WorkExperience>()
+                .HasKey(w => w.Id);
+
+            modelBuilder.Entity<ProjectCategory>()
+                .HasKey(pc => pc.Id);
+
             // Configure relationships
             modelBuilder.Entity<Project>()
                 .HasOne(p => p.User)
@@ -36,13 +55,13 @@ namespace PortfolioOpgave.Data
 
             modelBuilder.Entity<Education>()
                 .HasOne(e => e.User)
-                .WithMany()
+                .WithMany(u => u.Education)
                 .HasForeignKey(e => e.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<WorkExperience>()
                 .HasOne(w => w.User)
-                .WithMany()
+                .WithMany(u => u.WorkExperience)
                 .HasForeignKey(w => w.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 

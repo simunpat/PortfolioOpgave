@@ -1,0 +1,29 @@
+.page-container {
+    width: 100%;
+    padding: 0 1rem;
+    margin: 0 auto;
+}
+
+.page-content {
+    width: 100%;
+    max-width: 1076px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 2rem 0;
+}
+
+.section {
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .page-container {
+        padding: 0 0.75rem;
+    }
+
+    .page-content {
+        padding: 1rem 0;
+    }
+} 

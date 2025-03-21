@@ -16,6 +16,8 @@ namespace PortfolioOpgave.Repositories
             return _context.Users
                 .Include(u => u.Projects)
                 .Include(u => u.Skills)
+                .Include(u => u.WorkExperience)
+                .Include(u => u.Education)
                 .ToList();
         }
 
@@ -24,6 +26,8 @@ namespace PortfolioOpgave.Repositories
             return _context.Users
                 .Include(u => u.Projects)
                 .Include(u => u.Skills)
+                .Include(u => u.WorkExperience)
+                .Include(u => u.Education)
                 .FirstOrDefault(u => u.Id == id);
         }
     }

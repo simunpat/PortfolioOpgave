@@ -1,0 +1,96 @@
+.project-management-container {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.project-management-container h2 {
+    margin-bottom: 2rem;
+    color: #333;
+}
+
+.project-form-card {
+    margin-bottom: 2rem;
+}
+
+.form-field {
+    margin-bottom: 1rem;
+    width: 100%;
+}
+
+.form-field mat-form-field {
+    width: 100%;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.projects-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.project-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.project-card mat-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: #f5f5f5;
+    border-radius: 4px 4px 0 0;
+}
+
+.category-badge {
+    background-color: #e3f2fd;
+    color: #1976d2;
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 0.85em;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.project-details {
+    padding: 1rem;
+    flex-grow: 1;
+}
+
+.demo-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #1976d2;
+    text-decoration: none;
+    margin-bottom: 1rem;
+}
+
+.demo-link:hover {
+    color: #1565c0;
+}
+
+.project-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    padding: 1rem;
+    border-top: 1px solid #eee;
+}
+
+@media (max-width: 768px) {
+    .project-management-container {
+        padding: 1rem;
+    }
+
+    .projects-list {
+        grid-template-columns: 1fr;
+    }
+} 

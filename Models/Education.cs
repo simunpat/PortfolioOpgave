@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PortfolioOpgave.Models
 {
@@ -16,6 +17,7 @@ namespace PortfolioOpgave.Models
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 
+        [ForeignKey("User")]
         public int UserId { get; set; }
         public User User { get; set; } = null!;
     }

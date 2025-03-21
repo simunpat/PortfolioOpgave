@@ -1,98 +1,73 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using AutoMapper;
 using PortfolioOpgave.Interfaces;
 using PortfolioOpgave.Models;
 using PortfolioOpgave.DTOs;
 
 namespace PortfolioOpgave.Services
 {
-    public class ProjectService : Service<Project>, IProjectService
+    public class ProjectService : IProjectService
     {
-        private readonly IRepository<Project> _projectRepository;
-        private readonly IRepository<User> _userRepository;
-        private readonly IRepository<ProjectCategory> _categoryRepository;
+        private readonly IProjectRepository _projectRepository;
+        private readonly IMapper _mapper;
 
-        public ProjectService(
-            IRepository<Project> projectRepository,
-            IRepository<User> userRepository,
-            IRepository<ProjectCategory> categoryRepository) : base(projectRepository)
+        public ProjectService(IProjectRepository projectRepository, IMapper mapper)
         {
             _projectRepository = projectRepository;
-            _userRepository = userRepository;
-            _categoryRepository = categoryRepository;
+            _mapper = mapper;
         }
 
-        public IEnumerable<ProjectDto> GetAllWithDetails()
+        public ProjectDto GetById(int id)
+        {
+            var project = _projectRepository.GetById(id);
+            return _mapper.Map<ProjectDto>(project);
+        }
+
+        public IEnumerable<ProjectDto> GetAll()
         {
             var projects = _projectRepository.GetAll();
-            return projects.Select(p => new ProjectDto
-            {
-                Id = p.Id,
-                Title = p.Title,
-                Description = p.LiveDemoUrl ?? string.Empty
-            }).ToList();
+            return _mapper.Map<IEnumerable<ProjectDto>>(projects);
         }
 
-        public ProjectDto GetByIdWithDetails(int id)
+        public IEnumerable<ProjectDto> GetAllByUserId(int userId)
         {
-            var project = _projectRepository.GetById(id);
-            if (project == null)
-                return null;
-
-            return new ProjectDto
-            {
-                Id = project.Id,
-                Title = project.Title,
-                Description = project.LiveDemoUrl ?? string.Empty
-            };
+            var projects = _projectRepository.Find(p => p.UserId == userId);
+            return _mapper.Map<IEnumerable<ProjectDto>>(projects);
         }
 
-        public ProjectDto Create(ProjectCreateDto createProjectDto)
+        public ProjectDto Create(CreateProjectDto createProjectDto, int userId)
         {
-            var user = _userRepository.GetById(createProjectDto.UserId);
-            if (user == null)
-                throw new KeyNotFoundException($"User with ID {createProjectDto.UserId} not found");
-
-            var category = _categoryRepository.GetById(createProjectDto.ProjectCategoryId);
-            if (category == null)
-                throw new KeyNotFoundException($"ProjectCategory with ID {createProjectDto.ProjectCategoryId} not found");
-
-            var project = new Project
-            {
-                Title = createProjectDto.Title,
-                LiveDemoUrl = createProjectDto.LiveDemoUrl,
-                UserId = createProjectDto.UserId,
-                ProjectCategoryId = createProjectDto.ProjectCategoryId
-            };
+            var project = _mapper.Map<Project>(createProjectDto);
+            project.UserId = userId;
+            project.CreatedAt = DateTime.UtcNow;
 
             _projectRepository.Add(project);
-
-            return new ProjectDto
-            {
-                Id = project.Id,
-                Title = project.Title,
-                Description = project.LiveDemoUrl ?? string.Empty
-            };
+            return _mapper.Map<ProjectDto>(project);
         }
 
-        public void Update(int id, ProjectCreateDto updateProjectDto)
+        public ProjectDto Update(int id, UpdateProjectDto updateProjectDto, int userId)
         {
             var project = _projectRepository.GetById(id);
-            if (project == null)
-                throw new KeyNotFoundException($"Project with ID {id} not found");
 
-            var user = _userRepository.GetById(updateProjectDto.UserId);
-            if (user == null)
-                throw new KeyNotFoundException($"User with ID {updateProjectDto.UserId} not found");
+            if (project == null || project.UserId != userId)
+                throw new UnauthorizedAccessException("You don't have permission to update this project");
 
-            var category = _categoryRepository.GetById(updateProjectDto.ProjectCategoryId);
-            if (category == null)
-                throw new KeyNotFoundException($"ProjectCategory with ID {updateProjectDto.ProjectCategoryId} not found");
-
-            project.Title = updateProjectDto.Title;
-            project.LiveDemoUrl = updateProjectDto.LiveDemoUrl;
-            project.UserId = updateProjectDto.UserId;
-            project.ProjectCategoryId = updateProjectDto.ProjectCategoryId;
-
+            _mapper.Map(updateProjectDto, project);
             _projectRepository.Update(project);
+
+            return _mapper.Map<ProjectDto>(project);
+        }
+
+        public void Delete(int id, int userId)
+        {
+            var project = _projectRepository.GetById(id);
+
+            if (project == null || project.UserId != userId)
+                throw new UnauthorizedAccessException("You don't have permission to delete this project");
+
+            _projectRepository.Delete(id);
         }
     }
 }

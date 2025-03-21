@@ -8,7 +8,13 @@ namespace PortfolioOpgave.DTOs
         public string Name { get; set; }
     }
 
-    public class ProjectCategoryCreateDto
+    public class CreateProjectCategoryDto
+    {
+        [Required]
+        public string Name { get; set; }
+    }
+
+    public class UpdateProjectCategoryDto
     {
         [Required]
         public string Name { get; set; }

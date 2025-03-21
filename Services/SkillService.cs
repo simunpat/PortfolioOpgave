@@ -1,85 +1,72 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using AutoMapper;
 using PortfolioOpgave.Interfaces;
 using PortfolioOpgave.Models;
 using PortfolioOpgave.DTOs;
 
 namespace PortfolioOpgave.Services
 {
-    public class SkillService : Service<Skill>, ISkillService
+    public class SkillService : ISkillService
     {
-        private readonly IRepository<Skill> _skillRepository;
-        private readonly IRepository<User> _userRepository;
+        private readonly ISkillRepository _skillRepository;
+        private readonly IMapper _mapper;
 
-        public SkillService(
-            IRepository<Skill> skillRepository,
-            IRepository<User> userRepository) : base(skillRepository)
+        public SkillService(ISkillRepository skillRepository, IMapper mapper)
         {
             _skillRepository = skillRepository;
-            _userRepository = userRepository;
+            _mapper = mapper;
         }
 
-        public IEnumerable<SkillDto> GetAllWithDetails()
+        public SkillDto GetById(int id)
+        {
+            var skill = _skillRepository.GetById(id);
+            return _mapper.Map<SkillDto>(skill);
+        }
+
+        public IEnumerable<SkillDto> GetAll()
         {
             var skills = _skillRepository.GetAll();
-            return skills.Select(s => new SkillDto
-            {
-                Id = s.Id,
-                Name = s.Name,
-                Level = s.ProficiencyLevel
-            }).ToList();
+            return _mapper.Map<IEnumerable<SkillDto>>(skills);
         }
 
-        public SkillDto GetByIdWithDetails(int id)
+        public IEnumerable<SkillDto> GetAllByUserId(int userId)
         {
-            var skill = _skillRepository.GetById(id);
-            if (skill == null)
-                return null;
-
-            return new SkillDto
-            {
-                Id = skill.Id,
-                Name = skill.Name,
-                Level = skill.ProficiencyLevel
-            };
+            var skills = _skillRepository.Find(s => s.UserId == userId);
+            return _mapper.Map<IEnumerable<SkillDto>>(skills);
         }
 
-        public SkillDto Create(SkillCreateDto createSkillDto)
+        public SkillDto Create(CreateSkillDto createSkillDto, int userId)
         {
-            var user = _userRepository.GetById(createSkillDto.UserId);
-            if (user == null)
-                throw new KeyNotFoundException($"User with ID {createSkillDto.UserId} not found");
-
-            var skill = new Skill
-            {
-                Name = createSkillDto.Name,
-                ProficiencyLevel = createSkillDto.ProficiencyLevel,
-                UserId = createSkillDto.UserId
-            };
+            var skill = _mapper.Map<Skill>(createSkillDto);
+            skill.UserId = userId;
 
             _skillRepository.Add(skill);
-
-            return new SkillDto
-            {
-                Id = skill.Id,
-                Name = skill.Name,
-                Level = skill.ProficiencyLevel
-            };
+            return _mapper.Map<SkillDto>(skill);
         }
 
-        public void Update(int id, SkillCreateDto updateSkillDto)
+        public SkillDto Update(int id, UpdateSkillDto updateSkillDto, int userId)
         {
             var skill = _skillRepository.GetById(id);
-            if (skill == null)
-                throw new KeyNotFoundException($"Skill with ID {id} not found");
 
-            var user = _userRepository.GetById(updateSkillDto.UserId);
-            if (user == null)
-                throw new KeyNotFoundException($"User with ID {updateSkillDto.UserId} not found");
+            if (skill == null || skill.UserId != userId)
+                throw new UnauthorizedAccessException("You don't have permission to update this skill");
 
-            skill.Name = updateSkillDto.Name;
-            skill.ProficiencyLevel = updateSkillDto.ProficiencyLevel;
-            skill.UserId = updateSkillDto.UserId;
-
+            _mapper.Map(updateSkillDto, skill);
             _skillRepository.Update(skill);
+
+            return _mapper.Map<SkillDto>(skill);
+        }
+
+        public void Delete(int id, int userId)
+        {
+            var skill = _skillRepository.GetById(id);
+
+            if (skill == null || skill.UserId != userId)
+                throw new UnauthorizedAccessException("You don't have permission to delete this skill");
+
+            _skillRepository.Delete(id);
         }
     }
 }

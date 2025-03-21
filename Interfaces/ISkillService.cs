@@ -1,13 +1,16 @@
+using System.Collections.Generic;
 using PortfolioOpgave.Models;
 using PortfolioOpgave.DTOs;
 
 namespace PortfolioOpgave.Interfaces
 {
-    public interface ISkillService : IService<Skill>
+    public interface ISkillService
     {
-        IEnumerable<SkillDto> GetAllWithDetails();
-        SkillDto GetByIdWithDetails(int id);
-        SkillDto Create(SkillCreateDto createSkillDto);
-        void Update(int id, SkillCreateDto updateSkillDto);
+        SkillDto GetById(int id);
+        IEnumerable<SkillDto> GetAll();
+        IEnumerable<SkillDto> GetAllByUserId(int userId);
+        SkillDto Create(CreateSkillDto createSkillDto, int userId);
+        SkillDto Update(int id, UpdateSkillDto updateSkillDto, int userId);
+        void Delete(int id, int userId);
     }
 }

@@ -1,0 +1,56 @@
+<div class="home-container">
+    <div class="hero">
+        <mat-card>
+            <h1>Welcome to Portfolio Hub</h1>
+            <p>Discover and showcase developer portfolios</p>
+        </mat-card>
+    </div>
+
+    <div class="home-content">
+        <div class="users-grid">
+            <mat-card
+                *ngFor="let user of users"
+                class="user-card"
+                (click)="navigateToPortfolio(user.id)"
+            >
+                <mat-card-header>
+                    <mat-card-title>{{ user.name }}</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="user-info">
+                        <p class="user-email">{{ user.email }}</p>
+                    </div>
+                    <div class="user-stats">
+                        <div class="stat">
+                            <mat-icon>code</mat-icon>
+                            <span
+                                >{{ user.projects?.length || 0 }} Projects</span
+                            >
+                        </div>
+                        <div class="stat">
+                            <mat-icon>psychology</mat-icon>
+                            <span>{{ user.skills?.length || 0 }} Skills</span>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+
+        <div *ngIf="loading" class="loading-spinner">
+            <mat-spinner></mat-spinner>
+        </div>
+
+        <div *ngIf="error" class="error-message">
+            <p>
+                There was an error loading the content. Please try again later.
+            </p>
+        </div>
+
+        <div
+            *ngIf="!loading && !error && (!users || users.length === 0)"
+            class="empty-state"
+        >
+            <p>No portfolios found.</p>
+        </div>
+    </div>
+</div>
